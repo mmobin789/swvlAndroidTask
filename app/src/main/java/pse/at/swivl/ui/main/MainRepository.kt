@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import pse.at.swivl.api.NetworkClient
 import pse.at.swivl.ui.base.AppRepository
 import pse.at.swivl.ui.main.domain.Movie
 import pse.at.swivl.ui.utils.Utils
@@ -26,4 +27,9 @@ object MainRepository : AppRepository() {
         callback(movies)
 
     }
+
+    suspend fun searchPhotos(query: String) = withContext(Dispatchers.IO) {
+        NetworkClient.getApiClient().searchPhotos(query)
+    }
+
 }
