@@ -25,6 +25,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -65,5 +69,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
      // for logging network calls.
     implementation("com.squareup.okhttp3:logging-interceptor:4.8.1")
+
+      // for image loading and cache in memory (My own image loading library)
+    implementation 'io.pixel.android:pixel:0.0.2'
 
 }

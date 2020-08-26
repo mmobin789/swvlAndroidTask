@@ -14,4 +14,7 @@ interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMovies(movies: List<Movie>)
+
+    @Query("SELECT * FROM MOVIE WHERE title LIKE :title ORDER BY year LIMIT :maxResults")
+    suspend fun findMoviesByTitle(title: String, maxResults: Int): List<Movie>
 }

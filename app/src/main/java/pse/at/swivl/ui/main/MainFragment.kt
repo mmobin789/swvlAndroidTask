@@ -5,11 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.main_fragment.*
 import pse.at.swivl.R
+import pse.at.swivl.ui.main.adapter.MoviesAdapter
+import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.main.domain.models.MoviePicture
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.View {
+
+    private lateinit var moviesAdapter: MoviesAdapter
 
     companion object {
         fun newInstance() = MainFragment()
@@ -28,13 +35,40 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.loadMovies(view.context) {
-            Toast.makeText(view.context, it.size.toString(), Toast.LENGTH_SHORT).show()
+
+        viewModel.let {
+            it.attachView(this)
+            it.addObservers(this)
+            it.loadMovies()
+            it.searchPhotos("Margot robbie") { l ->
+                Toast.makeText(view.context, l.size.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
 
-        viewModel.searchPhotos("Margot robbie") {
-            Toast.makeText(view.context, it.size.toString(), Toast.LENGTH_SHORT).show()
-        }
+        sv.setOnQueryTextListener(this)
+
+
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+
+        if (newText.isNullOrBlank())
+            viewModel.loadMovies()
+        else
+            viewModel.findMoviesByTitle(newText, 5)
+        return true
+    }
+
+    override fun onMoviesLoaded(movies: List<Movie>) {
+        rv.adapter = MoviesAdapter(movies)
+    }
+
+    override fun onMoviePictureLoaded(moviePictures: List<MoviePicture>) {
+
     }
 
 }

@@ -1,6 +1,5 @@
 package pse.at.swivl.ui.main
 
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +17,11 @@ object MainRepository : AppRepository() {
     private val listType = object : TypeToken<List<Movie>?>() {}.type
     private val movieDao = getOfflineDatabase().getMovieDao()
 
-    suspend fun loadMovies(context: Context, callback: (List<Movie>) -> Unit) {
+    suspend fun findMoviesByTitle(title: String, maxResults: Int) =
+        movieDao.findMoviesByTitle("$title%", maxResults)
+
+
+    suspend fun loadMovies(callback: (List<Movie>) -> Unit) {
         var movies = movieDao.getMovies()
         if (movies.isEmpty()) {
             movies = withContext(Dispatchers.IO) {

@@ -5,10 +5,11 @@ import pse.at.swivl.TestApp
 import pse.at.swivl.database.OfflineDatabase
 
 abstract class AppRepository {
+    protected val context = TestApp.getInstance()
+
     companion object {
-        private val appContext = TestApp.getInstance()
         private val offlineDatabase =
-            Room.databaseBuilder(appContext, OfflineDatabase::class.java, "Test").build()
+            Room.databaseBuilder(TestApp.getInstance(), OfflineDatabase::class.java, "Test").build()
 
         fun getOfflineDatabase() = offlineDatabase
     }
