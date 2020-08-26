@@ -5,9 +5,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.IOException
 import pse.at.swivl.api.NetworkClient
 import pse.at.swivl.ui.base.AppRepository
-import pse.at.swivl.ui.main.domain.Movie
+import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.main.domain.models.MoviePicture
+import pse.at.swivl.ui.main.domain.models.Photos
 import pse.at.swivl.ui.utils.Utils
 
 object MainRepository : AppRepository() {
@@ -28,8 +31,17 @@ object MainRepository : AppRepository() {
 
     }
 
-    suspend fun searchPhotos(query: String) = withContext(Dispatchers.IO) {
-        NetworkClient.getApiClient().searchPhotos(query)
-    }
+    suspend fun searchPhotos(query: String): List<MoviePicture>? =
+        withContext(Dispatchers.IO) {
+            var pictures: List<MoviePicture>? = null
+            try {
+                val body = NetworkClient.getApiClient().searchPhotos(query).string()
+                val json = body.substringAfter("(").substringBefore("})") + "}"
+                pictures = mGson.fromJson(json, Photos::class.java).photos.pictures
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            pictures
+        }
 
 }

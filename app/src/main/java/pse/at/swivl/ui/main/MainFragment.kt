@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
         }
 
         viewModel.searchPhotos("Margot robbie") {
-            Toast.makeText(view.context, it.getImageURL(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(view.context, it.size.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

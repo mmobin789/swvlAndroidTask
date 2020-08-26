@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main.domain
+package pse.at.swivl.ui.main.domain.models
 
 class MoviePicture(
     private val id: String,

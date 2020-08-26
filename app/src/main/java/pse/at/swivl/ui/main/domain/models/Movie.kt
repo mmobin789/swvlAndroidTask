@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main.domain
+package pse.at.swivl.ui.main.domain.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
