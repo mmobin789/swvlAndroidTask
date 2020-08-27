@@ -9,7 +9,10 @@ import kotlinx.android.synthetic.main.adapter_movies_list.*
 import pse.at.swivl.R
 import pse.at.swivl.ui.main.domain.models.Movie
 
-class MoviesAdapter(private val list: List<Movie>) :
+class MoviesAdapter(
+    private val list: List<Movie>,
+    private val onClickListener: OnClickListener
+) :
     RecyclerView.Adapter<MoviesAdapter.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -24,20 +27,9 @@ class MoviesAdapter(private val list: List<Movie>) :
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val movie = list[position]
-
         holder.tvTitle.text = movie.title
         holder.tvYear.text = movie.year
-        holder.tvCast.text = movie.cast.joinToString()
-        holder.tvGenre.text = movie.genres.joinToString()
         holder.ratingBar.rating = movie.rating.toFloat()
-
-        /*      Pixel.load(
-                  picture.getImageURL(),
-                  imageView = holder.iv,
-                  pixelOptions = PixelOptions.Builder()
-                      .setPlaceholderResource(R.drawable.ic_loading_android).build()
-              )
-      */
 
     }
 
@@ -45,12 +37,23 @@ class MoviesAdapter(private val list: List<Movie>) :
         return list.size
     }
 
-    class VH(override val containerView: View) : RecyclerView.ViewHolder(containerView),
+    inner class VH(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         init {
-            itemView.setOnClickListener {
-
+            rootL.setOnClickListener {
+                onClickListener.onClick(list[adapterPosition])
             }
+
+            tvCast.visibility = View.GONE
+            tvGenre.visibility = View.GONE
+            ratingBar.setOnClickListener { }
+
         }
+
+
+    }
+
+    interface OnClickListener {
+        fun onClick(movie: Movie)
     }
 }

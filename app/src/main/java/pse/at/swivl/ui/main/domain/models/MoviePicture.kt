@@ -11,5 +11,5 @@ class MoviePicture(
     /**
      * @return image url based on above info.
      */
-    fun getImageURL() = "http://farm$farm.static.flickr.com/$server/${id}_$secret.jpg"
+    fun getImageURL() = "https://farm$farm.static.flickr.com/$server/${id}_$secret.jpg"
 }

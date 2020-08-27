@@ -1,22 +1,21 @@
 package pse.at.swivl.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.main_fragment.*
 import pse.at.swivl.R
+import pse.at.swivl.ui.detail.DetailActivity
 import pse.at.swivl.ui.main.adapter.MoviesAdapter
 import pse.at.swivl.ui.main.domain.models.Movie
-import pse.at.swivl.ui.main.domain.models.MoviePicture
 
-class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.View {
-
-    private lateinit var moviesAdapter: MoviesAdapter
+class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.View,
+    MoviesAdapter.OnClickListener {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -40,9 +39,6 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.V
             it.attachView(this)
             it.addObservers(this)
             it.loadMovies()
-            it.searchPhotos("Margot robbie") { l ->
-                Toast.makeText(view.context, l.size.toString(), Toast.LENGTH_SHORT).show()
-            }
         }
 
         sv.setOnQueryTextListener(this)
@@ -64,11 +60,11 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.V
     }
 
     override fun onMoviesLoaded(movies: List<Movie>) {
-        rv.adapter = MoviesAdapter(movies)
+        rv.adapter = MoviesAdapter(movies, this)
     }
 
-    override fun onMoviePictureLoaded(moviePictures: List<MoviePicture>) {
-
+    override fun onClick(movie: Movie) {
+        startActivity(Intent(context, DetailActivity::class.java).putExtra("title", movie.title))
     }
 
 }
