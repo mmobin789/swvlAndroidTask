@@ -21,9 +21,14 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
         moviePicturesData.observe(lifecycleOwner, moviePicturesObserver)
     }
 
-    fun searchPhotos(query: String) {
+    /**
+     * The will search for movie's pictures using its title on flickr.com
+     * If available pictures would be shown on UI else nothing will be shown.
+     * @param title The movie title.
+     */
+    fun searchMoviePictures(title: String) {
         viewModelScope.launch {
-            MainRepository.searchPhotos(query)?.also {
+            MainRepository.searchMoviePictures(title)?.also {
                 moviePicturesData.postValue(it)
             }
         }

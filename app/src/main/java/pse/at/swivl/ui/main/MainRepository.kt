@@ -39,11 +39,11 @@ object MainRepository : AppRepository() {
     suspend fun findMovieByTitle(title: String) = movieDao.findMovieByTitle(title)
 
 
-    suspend fun searchPhotos(query: String): List<MoviePicture>? =
+    suspend fun searchMoviePictures(title: String): List<MoviePicture>? =
         withContext(Dispatchers.IO) {
             var pictures: List<MoviePicture>? = null
             try {
-                val body = apiClient.searchPhotos(query).string()
+                val body = apiClient.searchPhotos(title).string()
                 val json = body.substringAfter("(").substringBefore("})") + "}"
                 pictures = mGson.fromJson(json, Photos::class.java).photos.pictures
             } catch (e: IOException) {

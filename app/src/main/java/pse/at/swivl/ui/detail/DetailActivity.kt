@@ -26,7 +26,7 @@ class DetailActivity : AppCompatActivity(), DetailViewModel.View {
             viewModel.let { vm ->
                 vm.attachView(this@DetailActivity)
                 vm.addObservers(this@DetailActivity)
-                vm.searchPhotos(this)
+                vm.searchMoviePictures(this)
                 vm.findMovieByTitle(this) {
                     tvYear.text = it.year
                     tvCast.text = it.cast.joinToString()

@@ -8,10 +8,16 @@ class TypeConverters {
     private val mGson = Gson()
     private val listType = object : TypeToken<ArrayList<String>?>() {}.type
 
+    /**
+     * Converts a string list to a String for saving in or reading from Room.
+     */
     @TypeConverter
-    fun stringListToString(list: ArrayList<String>) = mGson.toJson(list)
+    fun stringListToString(list: ArrayList<String>): String = mGson.toJson(list)
 
+    /**
+     * Converts a string to a String list for saving in or reading from Room.
+     */
     @TypeConverter
-    fun stringToStringList(s: String) = mGson.fromJson<ArrayList<String>>(s, listType)
+    fun stringToStringList(s: String): ArrayList<String> = mGson.fromJson(s, listType)
 
 }
