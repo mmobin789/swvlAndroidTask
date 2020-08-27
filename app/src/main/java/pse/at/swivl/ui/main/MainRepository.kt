@@ -17,8 +17,8 @@ object MainRepository : AppRepository() {
     private val listType = object : TypeToken<List<Movie>?>() {}.type
     private val movieDao = getOfflineDatabase().getMovieDao()
 
-    suspend fun findMoviesByTitle(title: String, maxResults: Int) =
-        movieDao.findMoviesByTitle("$title%", maxResults)
+    suspend fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) =
+        movieDao.findMoviesByTitle("%$title%", maxResults, rating)
 
 
     suspend fun loadMovies(callback: (List<Movie>) -> Unit) {

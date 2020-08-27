@@ -35,9 +35,9 @@ class MainViewModel : AppViewModel<MainViewModel.View>() {
         }
     }
 
-    fun findMoviesByTitle(title: String, maxResults: Int) {
+    fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) {
         viewModelScope.launch {
-            moviesData.postValue(MainRepository.findMoviesByTitle(title, maxResults))
+            moviesData.postValue(MainRepository.findMoviesByTitle(title, maxResults, rating))
         }
     }
 

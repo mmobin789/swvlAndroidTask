@@ -59,7 +59,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.V
         if (newText.isNullOrBlank())
             viewModel.loadMovies()
         else
-            viewModel.findMoviesByTitle(newText, 5)
+            viewModel.findMoviesByTitle(newText, 5, 5)
         return true
     }
 
