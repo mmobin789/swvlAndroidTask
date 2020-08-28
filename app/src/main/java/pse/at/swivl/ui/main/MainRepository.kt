@@ -24,15 +24,17 @@ object MainRepository : AppRepository() {
 
 
     suspend fun loadMovies(callback: (List<Movie>) -> Unit) {
-        var movies = movieDao.getMovies()
-        if (movies.isEmpty()) {
-            movies = withContext(Dispatchers.IO) {
+        var moviesList = movieDao.getMovies()
+        if (moviesList.isEmpty()) {
+            moviesList = withContext(Dispatchers.IO) {
                 mGson.fromJson(Utils.loadJSONStringFromAsset(context)!!, listType)
             }
-            movieDao.addMovies(movies)
+            movieDao.addMovies(moviesList)
+
+            moviesList = movieDao.getMovies()
         }
 
-        callback(movies)
+        callback(moviesList)
 
     }
 

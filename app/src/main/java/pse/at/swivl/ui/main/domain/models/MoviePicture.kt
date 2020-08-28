@@ -2,7 +2,7 @@ package pse.at.swivl.ui.main.domain.models
 
 class MoviePicture(
     private val id: String,
-    private val owner: String,
+    //  private val owner: String,
     private val secret: String,
     private val server: String,
     private val farm: Int,
