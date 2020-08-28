@@ -10,7 +10,7 @@ import pse.at.swivl.ui.movies.domain.models.Movie
 import pse.at.swivl.ui.utils.Utils
 
 /**
- * The movies database repository providing online/offline access to movie and its specific data.
+ * The movies repository providing online/offline database access to movie and its specific data.
  */
 object MoviesRepository : AppRepository() {
     private val mGson = Gson()

@@ -23,7 +23,7 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
 
     /**
      * The will search for movie's pictures using its title on flickr.com
-     * If available pictures would be shown on UI else nothing will be shown.
+     * If available, pictures would be shown on UI else nothing will be shown.
      * @param title The movie title.
      */
     fun searchMoviePictures(title: String) {
