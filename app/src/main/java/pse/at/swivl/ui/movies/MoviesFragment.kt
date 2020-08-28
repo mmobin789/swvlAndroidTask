@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main
+package pse.at.swivl.ui.movies
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,18 +11,18 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.main_fragment.*
 import pse.at.swivl.R
 import pse.at.swivl.ui.detail.DetailActivity
-import pse.at.swivl.ui.main.adapter.MoviesAdapter
-import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.movies.adapter.MoviesAdapter
+import pse.at.swivl.ui.movies.domain.models.Movie
 
-class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.View,
+class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewModel.View,
     MoviesAdapter.OnClickListener {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = MoviesFragment()
     }
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+        ViewModelProvider(this)[MoviesViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -61,6 +61,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, MainViewModel.V
 
     override fun onMoviesLoaded(movies: List<Movie>) {
         rv.adapter = MoviesAdapter(movies, this)
+        pBar.visibility = View.GONE
     }
 
     override fun onClick(movie: Movie) {

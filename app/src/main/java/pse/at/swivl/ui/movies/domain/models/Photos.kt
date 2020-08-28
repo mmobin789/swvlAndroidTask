@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main.domain.models
+package pse.at.swivl.ui.movies.domain.models
 
 import com.google.gson.annotations.SerializedName
 

@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import pse.at.swivl.TestApp
-import pse.at.swivl.ui.main.domain.dao.MovieDao
+import pse.at.swivl.ui.movies.domain.dao.MovieDao
 import pse.at.swivl.utils.TestUtils
 import java.io.IOException
 

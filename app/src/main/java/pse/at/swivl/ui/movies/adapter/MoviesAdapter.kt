@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main.adapter
+package pse.at.swivl.ui.movies.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.adapter_movies_list.*
 import pse.at.swivl.R
-import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.Movie
 
 class MoviesAdapter(
     private val list: List<Movie>,

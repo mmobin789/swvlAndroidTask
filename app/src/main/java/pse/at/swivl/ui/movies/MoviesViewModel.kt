@@ -1,4 +1,4 @@
-package pse.at.swivl.ui.main
+package pse.at.swivl.ui.movies
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import pse.at.swivl.base.AppViewModel
-import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.Movie
 
-class MainViewModel : AppViewModel<MainViewModel.View>() {
+class MoviesViewModel : AppViewModel<MoviesViewModel.View>() {
 
     private val moviesData = MutableLiveData<List<Movie>>()
     private val moviesDataObserver: Observer<in List<Movie>> = Observer {
@@ -21,7 +21,7 @@ class MainViewModel : AppViewModel<MainViewModel.View>() {
 
     fun loadMovies() {
         viewModelScope.launch {
-            MainRepository.loadMovies {
+            MoviesRepository.loadMovies {
                 moviesData.postValue(it)
             }
         }
@@ -29,7 +29,7 @@ class MainViewModel : AppViewModel<MainViewModel.View>() {
 
     fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) {
         viewModelScope.launch {
-            moviesData.postValue(MainRepository.findMoviesByTitle(title, maxResults, rating))
+            moviesData.postValue(MoviesRepository.findMoviesByTitle(title, maxResults, rating))
         }
     }
 

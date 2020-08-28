@@ -2,7 +2,7 @@ package pse.at.swivl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import pse.at.swivl.ui.main.MainFragment
+import pse.at.swivl.ui.movies.MoviesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, MoviesFragment.newInstance())
                 .commitNow()
         }
     }

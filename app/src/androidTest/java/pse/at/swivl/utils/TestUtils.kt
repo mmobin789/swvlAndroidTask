@@ -1,6 +1,6 @@
 package pse.at.swivl.utils
 
-import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.Movie
 
 object TestUtils {
 

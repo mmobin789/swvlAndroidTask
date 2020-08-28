@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import pse.at.swivl.base.AppViewModel
-import pse.at.swivl.ui.main.MainRepository
-import pse.at.swivl.ui.main.domain.models.Movie
-import pse.at.swivl.ui.main.domain.models.MoviePicture
+import pse.at.swivl.ui.movies.MoviesRepository
+import pse.at.swivl.ui.movies.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.MoviePicture
 
 class DetailViewModel : AppViewModel<DetailViewModel.View>() {
     private val moviePicturesData = MutableLiveData<List<MoviePicture>>()
@@ -28,7 +28,7 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
      */
     fun searchMoviePictures(title: String) {
         viewModelScope.launch {
-            MainRepository.searchMoviePictures(title)?.also {
+            MoviesRepository.searchMoviePictures(title)?.takeIf { it.isNotEmpty() }?.also {
                 moviePicturesData.postValue(it)
             }
         }
@@ -36,7 +36,7 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
 
     fun findMovieByTitle(title: String, callback: (Movie) -> Unit) {
         viewModelScope.launch {
-            MainRepository.findMovieByTitle(title)?.also(callback)
+            MoviesRepository.findMovieByTitle(title)?.also(callback)
         }
     }
 

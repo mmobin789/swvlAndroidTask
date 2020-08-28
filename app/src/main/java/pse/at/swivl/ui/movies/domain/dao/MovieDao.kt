@@ -1,10 +1,10 @@
-package pse.at.swivl.ui.main.domain.dao
+package pse.at.swivl.ui.movies.domain.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import pse.at.swivl.ui.main.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.Movie
 
 
 @Dao
