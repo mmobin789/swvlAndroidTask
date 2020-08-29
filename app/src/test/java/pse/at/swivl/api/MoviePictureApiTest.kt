@@ -18,16 +18,16 @@ class MoviePictureApiTest {
      * A test case where flickr api returns pictures for the movie title The Strange Ones.
      */
     @Test
-    fun findMoviesListByTitle() = runBlocking {
+    fun findMoviePictureListByTitle() = runBlocking {
         val picturesList = MovieApiCall.searchMoviePictures("The Strange Ones")
-        Assert.assertTrue(!picturesList.isNullOrEmpty())
+        Assert.assertFalse(picturesList.isNullOrEmpty())
     }
 
     /**
      * A test case where flickr api doesn't returns pictures for the movie title Insidious: The Last Key.
      */
     @Test
-    fun findEmptyMovieListByTitle() = runBlocking {
+    fun findEmptyMoviePicturesListByTitle() = runBlocking {
         val picturesList = MovieApiCall.searchMoviePictures("Insidious: The Last Key")
         Assert.assertTrue(picturesList.isNullOrEmpty())
     }
