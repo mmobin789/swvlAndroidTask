@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.adapter_movies_list.*
 import pse.at.swivl.R
+import pse.at.swivl.ui.detail.adapter.PicturesAdapter
 import pse.at.swivl.ui.movies.domain.models.MoviePicture
-import pse.at.swivl.ui.utils.load
 
 class DetailActivity : AppCompatActivity(), DetailViewModel.View {
 
@@ -39,10 +39,6 @@ class DetailActivity : AppCompatActivity(), DetailViewModel.View {
     }
 
     override fun onMoviePictureLoaded(moviePictures: List<MoviePicture>) {
-        iv1.load(moviePictures[0].getImageURL())
-        iv2.load(moviePictures[1].getImageURL())
-        iv3.load(moviePictures[2].getImageURL())
-
-
+        rv.adapter = PicturesAdapter(moviePictures)
     }
 }
