@@ -5,6 +5,24 @@ import org.junit.Test
 import pse.at.swivl.ui.movies.domain.models.MoviePicture
 
 class PictureURLTest {
+
+
+    private fun isPal(str: String, s: Int = 0, e: Int = str.lastIndex): Boolean {
+
+        return when {
+            e - s <= 1 -> true
+            str[s] == str[e] -> isPal(str, s + 1, e - 1)
+            else -> false
+        }
+
+    }
+
+    @Test
+    fun palTest() {
+        val result = isPal("anna")
+        Assert.assertTrue(result)
+    }
+
     @Test
     fun validPictureURL() {
         Assert.assertTrue(
