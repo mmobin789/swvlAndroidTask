@@ -22,6 +22,7 @@ class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewMode
      */
     fun searchMoviePictures(title: String) {
         viewModelScope.launch {
+            moviePicturesData.postValue(MoviePicturesUI.Loading)
             when (val response = moviesRepository.searchMoviePictures(title)) {
                 is PhotosAPIResponse.Success -> {
                     val pictures = response.moviePictures

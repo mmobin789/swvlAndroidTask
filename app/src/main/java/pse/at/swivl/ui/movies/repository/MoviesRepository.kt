@@ -23,7 +23,7 @@ class MoviesRepository(
 
 
     /**
-     * Each search query will trigger IO bound threads to search on database.
+     * Each search query will trigger IO bound threads to search in database.
      * This will scramble the UX so this method which runs the query is synchronized so only single thread access is allowed.
      */
     @Synchronized
