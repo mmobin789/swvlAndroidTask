@@ -1,13 +1,11 @@
 package pse.at.swivl.ui.detail.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.adapter_pictures_list.*
 import pse.at.swivl.R
+import pse.at.swivl.databinding.AdapterPicturesListBinding
 import pse.at.swivl.ui.movies.domain.models.MoviePicture
 import pse.at.swivl.ui.utils.load
 
@@ -22,17 +20,19 @@ class PicturesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.adapter_pictures_list,
-                parent,
-                false
+            AdapterPicturesListBinding.bind(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.adapter_pictures_list,
+                    parent,
+                    false
+                )
             )
         )
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val movie = list[position]
-        holder.iv.load(movie.getImageURL())
+        holder.binding.iv.load(movie.getImageURL())
 
     }
 
@@ -40,6 +40,5 @@ class PicturesAdapter(
         return list.size
     }
 
-    class VH(override val containerView: View) : RecyclerView.ViewHolder(containerView),
-        LayoutContainer
+    class VH(val binding: AdapterPicturesListBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -4,7 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pse.at.swivl.base.AppViewModel
 import pse.at.swivl.ui.movies.domain.models.Movie
 
@@ -21,15 +23,18 @@ class MoviesViewModel : AppViewModel<MoviesViewModel.View>() {
 
     fun loadMovies() {
         viewModelScope.launch {
-            MoviesRepository.loadMovies {
-                moviesData.postValue(it)
+            withContext(Dispatchers.IO) {
+                moviesData.postValue(MoviesRepository.loadMovies())
             }
+
         }
     }
 
     fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) {
         viewModelScope.launch {
-            moviesData.postValue(MoviesRepository.findMoviesByTitle(title, maxResults, rating))
+            withContext(Dispatchers.IO) {
+                moviesData.postValue(MoviesRepository.findMoviesByTitle(title, maxResults, rating))
+            }
         }
     }
 

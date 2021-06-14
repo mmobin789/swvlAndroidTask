@@ -7,7 +7,9 @@
     android:orientation="vertical"
     tools:context=".ui.detail.DetailActivity">
 
-    <include layout="@layout/adapter_movies_list" />
+    <include
+        android:id="@+id/layoutAdapterMovies"
+        layout="@layout/adapter_movies_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"

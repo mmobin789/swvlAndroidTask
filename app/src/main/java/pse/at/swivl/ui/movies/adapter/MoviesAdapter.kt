@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.adapter_movies_list.*
 import pse.at.swivl.R
+import pse.at.swivl.databinding.AdapterMoviesListBinding
 import pse.at.swivl.ui.movies.domain.models.Movie
 
 class MoviesAdapter(
@@ -17,19 +16,23 @@ class MoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.adapter_movies_list,
-                parent,
-                false
+            AdapterMoviesListBinding.bind(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.adapter_movies_list,
+                    parent,
+                    false
+                )
             )
         )
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val movie = list[position]
-        holder.tvTitle.text = movie.title
-        holder.tvYear.text = movie.year
-        holder.ratingBar.rating = movie.rating.toFloat()
+        holder.binding.run {
+            tvTitle.text = movie.title
+            tvYear.text = movie.year
+            ratingBar.rating = movie.rating.toFloat()
+        }
 
     }
 
@@ -37,16 +40,19 @@ class MoviesAdapter(
         return list.size
     }
 
-    inner class VH(override val containerView: View) : RecyclerView.ViewHolder(containerView),
-        LayoutContainer {
+    inner class VH(val binding: AdapterMoviesListBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            rootL.setOnClickListener {
-                onClickListener.onClick(list[adapterPosition])
-            }
+            binding.run {
+                root.setOnClickListener {
+                    onClickListener.onClick(list[bindingAdapterPosition])
+                }
 
-            tvCast.visibility = View.GONE
-            tvGenre.visibility = View.GONE
-            ratingBar.setOnClickListener { }
+                tvCast.visibility = View.GONE
+                tvGenre.visibility = View.GONE
+                ratingBar.setOnClickListener {
+                    //prevents click gesture appearance on rating bar.
+                }
+            }
 
         }
 

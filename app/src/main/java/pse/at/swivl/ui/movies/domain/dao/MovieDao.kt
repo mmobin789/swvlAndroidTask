@@ -10,14 +10,17 @@ import pse.at.swivl.ui.movies.domain.models.Movie
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM Movie ORDER BY year DESC")
-    suspend fun getMovies(): List<Movie>
+    fun getMovies(): List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMovies(movies: List<Movie>): List<Long>
+    fun addMovies(movies: List<Movie>): List<Long>
 
     @Query("SELECT * FROM MOVIE WHERE title LIKE :title AND rating =:rating ORDER BY year DESC LIMIT :maxResults")
-    suspend fun findMoviesByTitle(title: String, maxResults: Int, rating: Int): List<Movie>
+    fun findMoviesByTitle(title: String, maxResults: Int, rating: Int): List<Movie>
 
     @Query("SELECT * FROM MOVIE WHERE title=:title")
-    suspend fun findMovieByTitle(title: String): Movie?
+    fun findMovieByTitle(title: String): Movie?
+
+/*    @Query("SELECT * FROM MOVIE WHERE id=:id")
+    fun findMovieById(id: Int): Movie?*/
 }

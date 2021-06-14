@@ -17,28 +17,32 @@ object MoviesRepository : AppRepository() {
     private val listType = object : TypeToken<List<Movie>?>() {}.type
     private val movieDao = getOfflineDatabase().getMovieDao()
 
-    suspend fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) =
+    /**
+     * Each search query will trigger IO bound threads to search on database.
+     * This will scramble the UX so this method which runs the query is synchronized so only single thread access is allowed.
+     */
+    @Synchronized
+    fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) =
         movieDao.findMoviesByTitle("%$title%", maxResults, rating)
 
     /**
      * The movies are cached on 1st app launch from movies.json file and then loaded in sorted order from database.
      */
-    suspend fun loadMovies(callback: (List<Movie>) -> Unit) {
+    fun loadMovies(): List<Movie> {
         var moviesList = movieDao.getMovies()
         if (moviesList.isEmpty()) {
-            moviesList = withContext(Dispatchers.IO) {
-                mGson.fromJson(Utils.loadJSONStringFromAsset(context)!!, listType)
-            }
+            moviesList = mGson.fromJson(Utils.loadJSONStringFromAsset(context)!!, listType)
             movieDao.addMovies(moviesList)
-
             moviesList = movieDao.getMovies()
         }
 
-        callback(moviesList)
+        return moviesList
 
     }
 
-    suspend fun findMovieByTitle(title: String) = movieDao.findMovieByTitle(title)
+   // fun findMovieByTitle(title: String) = movieDao.findMovieByTitle(title)
+
+    //fun findMovieById(id: Int) = movieDao.findMovieById(id)
 
 
     suspend fun searchMoviePictures(title: String) = MovieApiCall.searchMoviePictures(title)

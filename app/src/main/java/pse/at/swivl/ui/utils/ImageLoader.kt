@@ -11,7 +11,7 @@ import pse.at.swivl.R
  */
 fun ImageView.load(url: String) {
     Pixel.load(
-        path = url,
+        url = url,
         imageView = this,
         pixelOptions = PixelOptions.Builder()
             .setPlaceholderResource(R.drawable.ic_loading_android).build()

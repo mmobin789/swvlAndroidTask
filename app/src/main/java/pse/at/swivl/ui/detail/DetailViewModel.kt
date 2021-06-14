@@ -4,7 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pse.at.swivl.base.AppViewModel
 import pse.at.swivl.ui.movies.MoviesRepository
 import pse.at.swivl.ui.movies.domain.models.Movie
@@ -34,11 +36,14 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
         }
     }
 
-    fun findMovieByTitle(title: String, callback: (Movie) -> Unit) {
+   /* fun findMovieById(id: Int, callback: (Movie) -> Unit) {
         viewModelScope.launch {
-            MoviesRepository.findMovieByTitle(title)?.also(callback)
+            withContext(Dispatchers.IO) {
+                MoviesRepository.findMovieById(id)
+            }?.also(callback)
+
         }
-    }
+    }*/
 
     interface View {
         fun onMoviePictureLoaded(moviePictures: List<MoviePicture>)

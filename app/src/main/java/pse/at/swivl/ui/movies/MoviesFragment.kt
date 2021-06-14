@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.main_fragment.*
-import pse.at.swivl.R
+import pse.at.swivl.databinding.MainFragmentBinding
 import pse.at.swivl.ui.detail.DetailActivity
 import pse.at.swivl.ui.movies.adapter.MoviesAdapter
 import pse.at.swivl.ui.movies.domain.models.Movie
@@ -21,6 +20,10 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
         fun newInstance() = MoviesFragment()
     }
 
+    val binding by lazy {
+        MainFragmentBinding.inflate(layoutInflater)
+    }
+
     private val viewModel by lazy {
         ViewModelProvider(this)[MoviesViewModel::class.java]
     }
@@ -29,7 +32,7 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +44,7 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
             it.loadMovies()
         }
 
-        sv.setOnQueryTextListener(this)
+        binding.sv.setOnQueryTextListener(this)
 
 
     }
@@ -60,12 +63,12 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
     }
 
     override fun onMoviesLoaded(movies: List<Movie>) {
-        rv.adapter = MoviesAdapter(movies, this)
-        pBar.visibility = View.GONE
+        binding.rv.adapter = MoviesAdapter(movies, this)
+        binding.pBar.visibility = View.GONE
     }
 
     override fun onClick(movie: Movie) {
-        startActivity(Intent(context, DetailActivity::class.java).putExtra("title", movie.title))
+        startActivity(Intent(context, DetailActivity::class.java).putExtra("movie", movie))
     }
 
 }
