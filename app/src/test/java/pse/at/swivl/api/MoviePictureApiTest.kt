@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Test
 import pse.at.swivl.ui.movies.api.RemoteSource
-import pse.at.swivl.ui.movies.domain.models.MoviePicture
+import pse.at.swivl.ui.movies.domain.models.PhotosAPIResponse
 
 /**
  * This class implementation paves the way to test api calls for everything.
@@ -18,35 +18,28 @@ class MoviePictureApiTest {
      * A test case where flickr api returns pictures for the movie title The Strange Ones.
      */
     @Test
-    fun findMoviePictureListByTitle() {
-        val moviePictures = mockk<List<MoviePicture>>()
+    fun findMoviePictureListByTitleSuccess() {
+        val moviePicturesSuccess = mockk<PhotosAPIResponse.Success>()
         val apiCallMock = mockk<RemoteSource>()
-        coEvery { apiCallMock.searchMoviePictures("The Strange Ones") } returns moviePictures
-        every { moviePictures.isEmpty() } returns false
-        Assert.assertFalse(moviePictures.isEmpty())
+        coEvery { apiCallMock.searchMoviePictures("The Strange Ones") } returns moviePicturesSuccess
+        every { moviePicturesSuccess.moviePictures } returns mockk()
+        val pictures = moviePicturesSuccess.moviePictures
+        every { pictures.isEmpty() } returns false
+        Assert.assertFalse(pictures.isEmpty())
     }
 
     /**
      * A test case where flickr api doesn't returns pictures for the movie title Insidious: The Last Key.
      */
     @Test
-    fun findEmptyMoviePicturesListByTitle() {
-        val moviePictures = mockk<List<MoviePicture>>()
+    fun findMoviePicturesListByTitleFail() {
+        val moviePicturesFail = mockk<PhotosAPIResponse.Failed>()
         val apiCallMock = mockk<RemoteSource>()
-        coEvery { apiCallMock.searchMoviePictures("Insidious: The Last Key") } returns moviePictures
-        every { moviePictures.isEmpty() } returns true
-        Assert.assertTrue(moviePictures.isEmpty())
+        coEvery { apiCallMock.searchMoviePictures("Insidious: The Last Key") } returns moviePicturesFail
+        every { moviePicturesFail.error } returns "API ERROR"
+        val moviePicturesError = moviePicturesFail.error
+        Assert.assertTrue(moviePicturesError.isNotBlank())
     }
 
-    /**
-     * A test case where flickr api  returns null for the movie title Insidious: The Last Key.
-     */
-    @Test
-    fun findNullMoviePicturesListByTitle() {
-        val moviePictures = mockk<List<MoviePicture>>()
-        val apiCallMock = mockk<RemoteSource>()
-        coEvery { apiCallMock.searchMoviePictures("Insidious: The Last Key") } returns null
-        every { moviePictures.isEmpty() } returns true
-        Assert.assertTrue(moviePictures.isNullOrEmpty())
-    }
+
 }
