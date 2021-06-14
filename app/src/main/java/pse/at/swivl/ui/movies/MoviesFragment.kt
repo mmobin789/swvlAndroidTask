@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pse.at.swivl.databinding.MainFragmentBinding
 import pse.at.swivl.ui.detail.DetailActivity
 import pse.at.swivl.ui.movies.adapter.MoviesAdapter
 import pse.at.swivl.ui.movies.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.MoviesUI
 
-class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewModel.View,
+class MoviesFragment : Fragment(), SearchView.OnQueryTextListener,
     MoviesAdapter.OnClickListener {
 
     companion object {
@@ -24,9 +25,7 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
         MainFragmentBinding.inflate(layoutInflater)
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[MoviesViewModel::class.java]
-    }
+    private val viewModel: MoviesViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +38,20 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
 
 
         viewModel.let {
-            it.attachView(this)
-            it.addObservers(this)
             it.loadMovies()
+            it.getMoviesUiData().observe(viewLifecycleOwner) { ui ->
+                when (ui) {
+                    MoviesUI.Loading -> {
+                        binding.pBar.visibility = View.VISIBLE
+                    }
+                    is MoviesUI.Success -> {
+                        binding.pBar.visibility = View.GONE
+                        binding.rv.adapter = MoviesAdapter(ui.movies, this)
+                    }
+                }
+            }
         }
+
 
         binding.sv.setOnQueryTextListener(this)
 
@@ -60,11 +69,6 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener, MoviesViewMod
         else
             viewModel.findMoviesByTitle(newText, 5, 5)
         return true
-    }
-
-    override fun onMoviesLoaded(movies: List<Movie>) {
-        binding.rv.adapter = MoviesAdapter(movies, this)
-        binding.pBar.visibility = View.GONE
     }
 
     override fun onClick(movie: Movie) {

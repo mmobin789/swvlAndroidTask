@@ -1,30 +1,28 @@
 package pse.at.swivl.ui.movies
 
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import pse.at.swivl.base.AppViewModel
-import pse.at.swivl.ui.movies.domain.models.Movie
+import pse.at.swivl.ui.movies.domain.models.MoviesUI
+import pse.at.swivl.ui.movies.repository.MoviesRepository
 
-class MoviesViewModel : AppViewModel<MoviesViewModel.View>() {
+class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    private val moviesData = MutableLiveData<List<Movie>>()
-    private val moviesDataObserver: Observer<in List<Movie>> = Observer {
-        getView().onMoviesLoaded(it)
-    }
+    private val moviesUiData = MutableLiveData<MoviesUI>()
 
-    fun addObservers(lifecycleOwner: LifecycleOwner) {
-        moviesData.observe(lifecycleOwner, moviesDataObserver)
-    }
+    fun getMoviesUiData(): LiveData<MoviesUI> = moviesUiData
 
     fun loadMovies() {
+        moviesUiData.postValue(MoviesUI.Loading)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                moviesData.postValue(MoviesRepository.loadMovies())
+                synchronized(this@MoviesViewModel) {
+                    moviesUiData.postValue(MoviesUI.Success(moviesRepository.loadMovies()))
+                }
             }
 
         }
@@ -33,12 +31,18 @@ class MoviesViewModel : AppViewModel<MoviesViewModel.View>() {
     fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                moviesData.postValue(MoviesRepository.findMoviesByTitle(title, maxResults, rating))
+                synchronized(this@MoviesViewModel) {
+                    moviesUiData.postValue(
+                        MoviesUI.Success(
+                            moviesRepository.findMoviesByTitle(
+                                title,
+                                maxResults,
+                                rating
+                            )
+                        )
+                    )
+                }
             }
         }
-    }
-
-    interface View {
-        fun onMoviesLoaded(movies: List<Movie>)
     }
 }

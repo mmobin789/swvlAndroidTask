@@ -84,6 +84,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
     // for image loading and cache in memory (My own image loading library)
-    implementation 'io.pixel.android:pixel:0.0.3-alpha'
+    implementation 'io.github.mmobin789.pixel:pixel:1.0.0-alpha'
+
+
+    // DI
+    // Koin main features for Android (Scope,ViewModel ...)
+    def koin_version = "3.0.2"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
 }

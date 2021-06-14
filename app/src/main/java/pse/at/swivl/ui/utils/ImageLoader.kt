@@ -1,8 +1,9 @@
 package pse.at.swivl.ui.utils
 
 import android.widget.ImageView
-import io.pixel.android.Pixel
-import io.pixel.android.config.PixelOptions
+import io.pixel.Pixel
+import io.pixel.config.PixelOptions
+
 import pse.at.swivl.R
 
 /**

@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 object NetworkClient {
     private const val baseURL = "https://api.flickr.com/services/rest/"
-    private val retrofit = Retrofit.Builder()
+    fun getRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl(baseURL)
         .client(
             OkHttpClient.Builder()
@@ -19,9 +19,6 @@ object NetworkClient {
         )
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
-    fun getApiClient(): API = retrofit.create(API::class.java)
-
 
     interface API {
         @GET("?method=flickr.photos.search&api_key=8ce9b1555c83aa5e7a309c5376edae4c&format=json&per_page=10")

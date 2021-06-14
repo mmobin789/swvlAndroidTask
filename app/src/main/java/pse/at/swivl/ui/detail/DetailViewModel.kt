@@ -1,27 +1,19 @@
 package pse.at.swivl.ui.detail
 
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import pse.at.swivl.base.AppViewModel
-import pse.at.swivl.ui.movies.MoviesRepository
-import pse.at.swivl.ui.movies.domain.models.Movie
-import pse.at.swivl.ui.movies.domain.models.MoviePicture
+import pse.at.swivl.ui.movies.domain.models.MoviePicturesUI
+import pse.at.swivl.ui.movies.domain.models.PhotosAPIResponse
+import pse.at.swivl.ui.movies.repository.MoviesRepository
 
-class DetailViewModel : AppViewModel<DetailViewModel.View>() {
-    private val moviePicturesData = MutableLiveData<List<MoviePicture>>()
+class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+    private val moviePicturesData = MutableLiveData<MoviePicturesUI>()
 
-    private val moviePicturesObserver: Observer<in List<MoviePicture>> = Observer {
-        getView().onMoviePictureLoaded(it)
-    }
+    fun getMoviePicturesData() = moviePicturesData as LiveData<MoviePicturesUI>
 
-    fun addObservers(lifecycleOwner: LifecycleOwner) {
-        moviePicturesData.observe(lifecycleOwner, moviePicturesObserver)
-    }
 
     /**
      * The will search for movie's pictures using its title on flickr.com
@@ -30,22 +22,27 @@ class DetailViewModel : AppViewModel<DetailViewModel.View>() {
      */
     fun searchMoviePictures(title: String) {
         viewModelScope.launch {
-            MoviesRepository.searchMoviePictures(title)?.takeIf { it.isNotEmpty() }?.also {
-                moviePicturesData.postValue(it)
+            when (val response = moviesRepository.searchMoviePictures(title)) {
+                is PhotosAPIResponse.Success -> {
+                    val pictures = response.moviePictures
+                    if(pictures.isEmpty())
+                        moviePicturesData.postValue(MoviePicturesUI.Failed("Movie Pictures not available."))
+                    else
+                    moviePicturesData.postValue(MoviePicturesUI.Success(response.moviePictures))
+                }
+                is PhotosAPIResponse.Failed -> {
+                    moviePicturesData.postValue(MoviePicturesUI.Failed(response.error))
+                }
             }
         }
     }
 
-   /* fun findMovieById(id: Int, callback: (Movie) -> Unit) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                MoviesRepository.findMovieById(id)
-            }?.also(callback)
+    /* fun findMovieById(id: Int, callback: (Movie) -> Unit) {
+         viewModelScope.launch {
+             withContext(Dispatchers.IO) {
+                 MoviesRepository.findMovieById(id)
+             }?.also(callback)
 
-        }
-    }*/
-
-    interface View {
-        fun onMoviePictureLoaded(moviePictures: List<MoviePicture>)
-    }
+         }
+     }*/
 }
