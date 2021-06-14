@@ -64,9 +64,9 @@ class OfflineDBTest {
         assertFalse(movieDao.getMovies().isNotEmpty())
     }
 
-    /**
+   /* *//**
      * The test case for movie available by a title.
-     */
+     *//*
     @Test
     fun findMovieByTitle() = runBlocking {
         val title = "Avengers:Civil War"
@@ -75,16 +75,16 @@ class OfflineDBTest {
         assertTrue(movieDao.findMovieByTitle(title) != null)
     }
 
-    /**
+    *//**
      * The test case for movie not available by a title.
-     */
+     *//*
     @Test
     fun findNoMovieByTitle() = runBlocking {
         val title = "Test Movie"
         val movie = TestUtils.createMovie(1, "Test Movie 2")
         movieDao.addMovies(listOf(movie))
         assertFalse(movieDao.findMovieByTitle(title) != null)
-    }
+    }*/
 
     /**
      * The test case for maximum search results.

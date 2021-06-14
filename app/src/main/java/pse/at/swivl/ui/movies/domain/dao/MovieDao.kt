@@ -18,8 +18,8 @@ interface MovieDao {
     @Query("SELECT * FROM MOVIE WHERE title LIKE :title AND rating =:rating ORDER BY year DESC LIMIT :maxResults")
     fun findMoviesByTitle(title: String, maxResults: Int, rating: Int): List<Movie>
 
-    @Query("SELECT * FROM MOVIE WHERE title=:title")
-    fun findMovieByTitle(title: String): Movie?
+    /*  @Query("SELECT * FROM MOVIE WHERE title=:title")
+      fun findMovieByTitle(title: String): Movie?*/
 
 /*    @Query("SELECT * FROM MOVIE WHERE id=:id")
     fun findMovieById(id: Int): Movie?*/
