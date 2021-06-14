@@ -13,7 +13,7 @@ import pse.at.swivl.ui.movies.domain.models.PhotosAPIResponse
  * In case of success, you get data from API and test passes.
  * In any other case, internet error or bad request or time out test fails.
  */
-class MoviePictureApiTest {
+class RemoteSourceTest {
     /**
      * A test case where flickr api returns pictures for the movie title The Strange Ones.
      */
