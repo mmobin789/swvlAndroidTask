@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pse.at.swivl.databinding.ActivityDetailBinding
+import pse.at.swivl.ui.DI
 import pse.at.swivl.ui.detail.adapter.PicturesAdapter
 import pse.at.swivl.ui.movies.domain.models.Movie
 import pse.at.swivl.ui.movies.domain.models.MoviePicturesUI
@@ -22,6 +23,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        DI.start(this)
         viewModel.let { vm ->
             intent.getParcelableExtra<Movie>("movie")?.let {
                 binding.layoutAdapterMovies.run {

@@ -22,8 +22,8 @@ object DI {
     private var init = false
 
     /**
-     * This initializes Koin DI for the whole application.
-     * This must be only called once.
+     * This initializes Koin DI for the whole application if it's not init.
+     * It will only invoke once at start koin further invocations will have no effect.
      */
     fun start(context: Context) {
 

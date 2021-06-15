@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pse.at.swivl.databinding.MainFragmentBinding
+import pse.at.swivl.ui.DI
 import pse.at.swivl.ui.detail.DetailActivity
 import pse.at.swivl.ui.movies.adapter.MoviesAdapter
 import pse.at.swivl.ui.movies.domain.models.Movie
 import pse.at.swivl.ui.movies.domain.models.MoviesUI
 
-class MoviesFragment : Fragment(), SearchView.OnQueryTextListener,
-    MoviesAdapter.OnClickListener {
+class MoviesFragment : Fragment(),
+    MoviesAdapter.OnClickListener, SearchView.OnQueryTextListener {
 
     companion object {
         fun newInstance() = MoviesFragment()
@@ -36,6 +37,7 @@ class MoviesFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        DI.start(view.context)
 
         viewModel.let {
             it.loadMovies()
