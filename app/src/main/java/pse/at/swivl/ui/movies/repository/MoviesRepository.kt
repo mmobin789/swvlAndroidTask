@@ -1,22 +1,21 @@
 package pse.at.swivl.ui.movies.repository
 
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pse.at.swivl.ui.movies.api.RemoteSource
 import pse.at.swivl.ui.movies.domain.models.Movie
-import pse.at.swivl.ui.utils.Utils
+import pse.at.swivl.ui.utils.FileUtils
 
 /**
  * The movies repository providing online/offline database access to movie and its specific data.
  */
 class MoviesRepository(
-    private val context: Context,
     private val remoteSource: RemoteSource,
     private val localSource: LocalSource,
-    private val gson: Gson
+    private val gson: Gson,
+    private val fileUtils: FileUtils
 ) {
 
     private val listType = object : TypeToken<List<Movie>?>() {}.type
@@ -27,9 +26,9 @@ class MoviesRepository(
      * This will scramble the UX so this method which runs the query is synchronized so only single thread access is allowed.
      */
     @Synchronized
-    suspend fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) =
+    suspend fun findMoviesByTitle(title: String) =
         withContext(Dispatchers.IO) {
-            localSource.findMoviesByTitle(title, maxResults, rating)
+            localSource.findMoviesByTitle(title)
         }
 
     /**
@@ -37,13 +36,13 @@ class MoviesRepository(
      */
     @Synchronized
     suspend fun loadMovies(): List<Movie> = withContext(Dispatchers.IO) {
-        var moviesList = localSource.getMovies()
-        if (moviesList.isEmpty()) {
-            moviesList = gson.fromJson(Utils.loadJSONStringFromAsset(context)!!, listType)
-            localSource.addMovies(moviesList)
-            moviesList = localSource.getMovies()
-        }
-        moviesList
+            var moviesList = localSource.getMovies()
+            if (moviesList.isEmpty()) {
+                moviesList = gson.fromJson(fileUtils.loadJSONStringFromAsset(), listType)
+                localSource.addMovies(moviesList)
+                moviesList = localSource.getMovies()
+            }
+            moviesList
     }
 
 // fun findMovieByTitle(title: String) = movieDao.findMovieByTitle(title)

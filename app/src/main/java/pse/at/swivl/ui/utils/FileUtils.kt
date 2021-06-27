@@ -6,15 +6,12 @@ import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
 
-object Utils {
+class FileUtils(private val context: Context) {
     /**
      * This method can be used to read a json file.
      * For now it specifically reads movies.json file from assets folder.
-     * @param context context of app.
      */
-    fun loadJSONStringFromAsset(
-        context: Context
-    ): String? {
+    fun loadJSONStringFromAsset(): String? {
         try {
             val `is`: InputStream = context.assets.open("movies.json")
             val size: Int = `is`.available()

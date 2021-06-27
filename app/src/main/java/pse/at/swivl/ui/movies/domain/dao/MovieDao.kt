@@ -9,14 +9,23 @@ import pse.at.swivl.ui.movies.domain.models.Movie
 
 @Dao
 interface MovieDao {
-    @Query("SELECT * FROM Movie ORDER BY year DESC")
+    /**
+     * This query should be improved using offset to gain paginated data snapshot there's no point of loading all the table at once because it performs poorly
+     * and most likely all contents of the table will never be viewed.
+     * There's no point in loading all the data at once user will not go through it
+     * Limit ensures performance around constraints.
+     */
+    @Query("SELECT * FROM Movie ORDER BY year DESC LIMIT 500")
     fun getMovies(): List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addMovies(movies: List<Movie>): List<Long>
 
-    @Query("SELECT * FROM MOVIE WHERE title LIKE :title AND rating =:rating ORDER BY year DESC LIMIT :maxResults")
-    fun findMoviesByTitle(title: String, maxResults: Int, rating: Int): List<Movie>
+    /**
+     * The limit forces the user to type more to gain accurate results instead of returning all data from the table which gives bad performance.
+     */
+    @Query("SELECT * FROM Movie WHERE title LIKE :title ORDER BY year DESC LIMIT 100")
+    fun findMoviesByTitle(title: String): List<Movie>
 
     /*  @Query("SELECT * FROM MOVIE WHERE title=:title")
       fun findMovieByTitle(title: String): Movie?*/

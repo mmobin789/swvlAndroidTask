@@ -69,7 +69,7 @@ class MoviesFragment : Fragment(),
         if (newText.isNullOrBlank())
             viewModel.loadMovies()
         else
-            viewModel.findMoviesByTitle(newText, 5, 5)
+            viewModel.findMoviesByTitle(newText)
         return true
     }
 

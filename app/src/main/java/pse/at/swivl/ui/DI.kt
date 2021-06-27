@@ -15,6 +15,7 @@ import pse.at.swivl.ui.movies.MoviesViewModel
 import pse.at.swivl.ui.movies.api.RemoteSource
 import pse.at.swivl.ui.movies.repository.LocalSource
 import pse.at.swivl.ui.movies.repository.MoviesRepository
+import pse.at.swivl.ui.utils.FileUtils
 import retrofit2.Retrofit
 
 object DI {
@@ -35,6 +36,7 @@ object DI {
                 NetworkClient.getRetrofit()
             }
             single { Gson() }
+            single { FileUtils(context) }
             single { get<Retrofit>().create(NetworkClient.API::class.java) }
             single { RemoteSource(get(), get()) }
             single { Room.databaseBuilder(get(), OfflineDatabase::class.java, "appDB").build() }

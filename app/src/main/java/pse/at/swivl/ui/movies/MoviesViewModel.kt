@@ -16,22 +16,18 @@ class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewMode
 
     fun loadMovies() {
         viewModelScope.launch {
-            moviesUiData.postValue(MoviesUI.Loading)
-            moviesUiData.postValue(MoviesUI.Success(moviesRepository.loadMovies()))
+            moviesUiData.value = MoviesUI.Loading
+            moviesUiData.value = MoviesUI.Success(moviesRepository.loadMovies())
 
         }
     }
 
-    fun findMoviesByTitle(title: String, maxResults: Int, rating: Int) {
+    fun findMoviesByTitle(title: String) {
         viewModelScope.launch {
-            moviesUiData.postValue(
-                MoviesUI.Success(
+            moviesUiData.value = MoviesUI.Success(
                     moviesRepository.findMoviesByTitle(
-                        title,
-                        maxResults,
-                        rating
+                        title
                     )
-                )
             )
 
         }

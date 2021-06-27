@@ -61,8 +61,8 @@ class MoviesViewModelTest {
         val liveData = moviesViewModel.getMoviesUiData()
         val observer = Observer<MoviesUI> {}
         liveData.observeForever(observer)
-        coEvery { moviesRepository.findMoviesByTitle("", 5, 5) } returns mockk()
-        moviesViewModel.findMoviesByTitle("", 5, 5)
+        coEvery { moviesRepository.findMoviesByTitle("") } returns mockk()
+        moviesViewModel.findMoviesByTitle("")
         Assert.assertTrue(liveData.value is MoviesUI.Success)
 
     }

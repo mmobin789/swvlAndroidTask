@@ -89,7 +89,7 @@ class LocalSourceTest {
     @Test
     fun findMoviesListByTitle() = runBlocking {
         localSource.addMovies(TestUtils.createMovies(10))
-        val foundMovies = localSource.findMoviesByTitle("%movie%", 5, 5)
+        val foundMovies = localSource.findMoviesByTitle("%movie%")
         assertTrue(foundMovies.size == 5)
     }
 
@@ -99,7 +99,7 @@ class LocalSourceTest {
     @Test
     fun findEmptyMoviesListByTitle() = runBlocking {
         localSource.addMovies(TestUtils.createMovies(10))
-        val foundMovies = localSource.findMoviesByTitle("%test%", 5, 5)
+        val foundMovies = localSource.findMoviesByTitle("%test%")
         assertFalse(foundMovies.isNotEmpty())
     }
 }
